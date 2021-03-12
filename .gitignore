@@ -1,0 +1,21 @@
+/target/
+.classpath
+.project
+*.prefs
+test-output/navigator-bullet.png
+test-output/junitreports/TEST-com.gs.number.bar.histogram.max.area.MaxAreaCalculatorTest.xml
+test-output/jquery-3.4.1.min.js
+test-output/index.html
+test-output/failed.png
+test-output/emailable-report.html
+test-output/Default suite/testng-failed.xml
+test-output/Default suite/Default test.xml
+test-output/Default suite/Default test.html
+test-output/collapseall.gif
+test-output/bullet_point.png
+*.html
+*.png
+*.properties
+*.xml
+*.js
+*.css
