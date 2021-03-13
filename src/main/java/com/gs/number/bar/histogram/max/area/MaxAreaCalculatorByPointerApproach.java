@@ -8,7 +8,7 @@ public class MaxAreaCalculatorByPointerApproach implements MaxAreaCalculator{
     int left = 0;
     int right = nums.length - 1;
     
-    while ( left < right) {
+    do{
       int leftHeight = nums[left];
       int rightHeight = nums[right];
       
@@ -18,15 +18,15 @@ public class MaxAreaCalculatorByPointerApproach implements MaxAreaCalculator{
       
       maxArea = Math.max(maxArea, area);
 
-      if(nums[left] == nums[right]) {
+      if(leftHeight == rightHeight) {
         break;
-      }else if(nums[left] < nums[right]) {
+      }else if(leftHeight < rightHeight) {
         left++;
       }else {
         right--;
       }
       
-    }
+    }while ( left < right);
     
     return maxArea;
   }
