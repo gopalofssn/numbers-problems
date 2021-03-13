@@ -1,4 +1,4 @@
-package com.gs.number.snow.problem;
+package com.gs.number.bar.snow.problem;
 
 import java.util.Arrays;
 
