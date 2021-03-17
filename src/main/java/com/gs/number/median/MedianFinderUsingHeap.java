@@ -27,11 +27,11 @@ public class MedianFinderUsingHeap implements MedianFinder {
   public void addNum(int num) {
     
     miniHeap.offer(num);
-    
+    // condition for swapping
     if(!maxHeap.isEmpty() && maxHeap.peek() > miniHeap.peek()) {
       swap();
     }
-    
+    // to maintain balance 
     if(maxHeap.size() +1 != miniHeap.size()) {
       int toMax = miniHeap.poll();
       maxHeap.offer(toMax);
