@@ -11,7 +11,8 @@ public class TrappingRainWaterTest {
     return new TrappingRainWater[] {
         new TrappingRainWaterTwoExtraArray(),
         new TrappingWaterOneExtraArray(),
-        new TrappingRainWaterNoExtraSpace()
+        new TrappingRainWaterTwoExtraArrayAndMultiThread(),
+        //new TrappingRainWaterNoExtraSpace()
         };
   }
 

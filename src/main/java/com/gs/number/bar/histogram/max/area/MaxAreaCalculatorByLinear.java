@@ -1,5 +1,14 @@
 package com.gs.number.bar.histogram.max.area;
 
+/**
+ * 
+ * @author Gopal Selvaraj
+ *
+ *  Time : O(n^2)
+ *  Space : O(1)
+ *  
+ *  
+ */
 public class MaxAreaCalculatorByLinear implements MaxAreaCalculator {
 
   public int calculate(int[] nums) {

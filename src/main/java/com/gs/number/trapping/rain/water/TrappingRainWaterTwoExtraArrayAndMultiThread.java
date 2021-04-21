@@ -7,33 +7,28 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-/*
-basic approach
---------------
-I / P   :   [0,1,0,2,1,0,1,3,2,1,2,1]
-Left    :   [0,1,1,2,2,2,2,3,3,3,3,3]   - max
-Right   :   [3,3,3,3,3,3,3,3,2,2,2,1]   - max
-contri  :   [0,0,1,0,1,2,1,0,0,1,0,0]   - min(left, right) - actual height
-formula  to hold water each index- 
-   min(left max, right max) - height[index]
-            [0,0,1,0,1,2,1,0,0,1,0,0]
-            = 1 + 1 + 2 + 1 + 1
-            = 6
-            
-   Time  : O(n) , 3n actually
-   Space : O(n)  , 2n actually
- */
+public class TrappingRainWaterTwoExtraArrayAndMultiThread implements TrappingRainWater{
 
-public class TrappingRainWaterTwoExtraArray implements TrappingRainWater {
-
+  private ExecutorService executorService = Executors.newFixedThreadPool(2);
+  
+  @Override
   public int trap(int[] heights) {
-
-    if (heights == null || heights.length == 0)
-      return 0;
-
-    int[] leftMaxHeights = findLeftMaxHeights(heights);
-    int[] rightMaxHeights = findRightMaxHeights(heights);
-
+    
+    Callable<int[]> leftMaxHeightsCallable = () ->{
+      return findLeftMaxHeights(heights);
+    };
+    Future<int[]> leftMaxHeightsFuture =  executorService.submit(leftMaxHeightsCallable);
+    
+     
+    Callable<int[]> rightMaxHeightsCallable = () ->{
+      return findRightMaxHeights(heights);
+    };
+    Future<int[]> rightMaxHeightsFuture =  executorService.submit(rightMaxHeightsCallable);
+    
+    
+    int[] leftMaxHeights = get(leftMaxHeightsFuture);
+    int[] rightMaxHeights = get(rightMaxHeightsFuture);
+    
     int total = 0;
     for (int index = 0; index < heights.length; index++) {
       int min = Math.min(leftMaxHeights[index], rightMaxHeights[index]);
@@ -46,6 +41,15 @@ public class TrappingRainWaterTwoExtraArray implements TrappingRainWater {
     return total;
   }
 
+  
+  private int[] get(Future<int[]> leftMaxHeightsFuture) {
+    // TODO Auto-generated method stub
+    try {
+      return leftMaxHeightsFuture.get();
+    } catch (InterruptedException| ExecutionException e) {
+      return new int[] {};
+    }
+  }
 
   private int[] findRightMaxHeights(int[] heights) {
     int[] rightMaxHeights = new int[heights.length];

@@ -10,7 +10,7 @@ public class MaxAreaCalculatorTest {
   public MaxAreaCalculator[] maxAreaCalculatorDataProvider() {
     return new MaxAreaCalculator[] {
         new MaxAreaCalculatorByLinear(),
-        new MaxAreaCalculatorByPointerApproach()
+        new MaxAreaCalculatorByStackApproach()
     };
   }
   
@@ -42,6 +42,13 @@ public class MaxAreaCalculatorTest {
   public void testCase5(MaxAreaCalculator maxAreaCalculator) {
     int[] nums  = { 4, 3, 2, 1, 4};
     assertEquals(16, maxAreaCalculator.calculate(nums));
+  }
+  
+  
+  @Test(dataProvider = "maxAreaCalculatorDataProvider")
+  public void testCase6(MaxAreaCalculator maxAreaCalculator) {
+    int[] nums  = {1, 0, 0, 0, 1};
+    assertEquals(1, maxAreaCalculator.calculate(nums));
   }
   
 }
