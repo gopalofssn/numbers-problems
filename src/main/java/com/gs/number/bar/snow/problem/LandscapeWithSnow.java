@@ -16,60 +16,68 @@ import java.util.Arrays;
             #     #  
       #     #   # #  
       # # # # # # #  
-      2 1 1 2 1 2 2
-  idx  0 1 2 3 4 5 6
+  idx 0 1 2 3 4 5 6
   
   when 1st drop on index 3
                      
             #     #  
       #   $ #   # #  
       # # # # # # #  
-      2 1 1 2 1 2 2
   idx 0 1 2 3 4 5 6  
   
   
     when 2nd drop on index 3
                      
-            #     #  
-      # $ $ #   # #  
+          $ #     #  
+      #   $ #   # #  
       # # # # # # #  
-      2 1 1 2 1 2 2
   idx 0 1 2 3 4 5 6 
   
   
       when 3rd drop on index 3
                     
-            #     #  
-      # $ $ # $ # # 
+          $ #     #  
+      # $ $ #   # # 
       # # # # # # #  
-      2 1 1 2 1 2 2
   idx 0 1 2 3 4 5 6 
   
   
         when 4th drop on index 3
                    
-            #   $ # 
-      # $ $ # $ # #  
+        $ $ #     # 
+      # $ $ #   # #  
       # # # # # # #  
-      2 1 1 2 1 2 2
   idx 0 1 2 3 4 5 6 
   
   
           when 5th drop on index 3
                    
-            # $ $ # 
+        $ $ #     # 
       # $ $ # $ # #  
       # # # # # # #  
-      2 1 1 2 1 2 2
   idx 0 1 2 3 4 5 6 
  
     when 6th drop on index 3
-            $       
-            # $ $ # 
+    
+        $ $ # $   # 
       # $ $ # $ # #  
       # # # # # # #  
-      2 1 1 2 1 2 2
   idx 0 1 2 3 4 5 6 
+  
+      when 7th drop on index 3
+    
+        $ $ # $ $ # 
+      # $ $ # $ # #  
+      # # # # # # #  
+  idx 0 1 2 3 4 5 6 
+  
+      when 8th drop on index 3
+            $
+        $ $ # $ $ # 
+      # $ $ # $ # #  
+      # # # # # # #  
+  idx 0 1 2 3 4 5 6 
+  
  */
 
 public class LandscapeWithSnow {
@@ -77,9 +85,20 @@ public class LandscapeWithSnow {
   public int[] afterSnow(final int[] heights, int totalUnitOfSnow, final int positionToSnow) {
   
     int[] capacityHolder = findCapacityHolder(heights, positionToSnow);
-
-    totalUnitOfSnow = fillAndSendRemaining(heights, totalUnitOfSnow, positionToSnow - 1, capacityHolder, -1); // filling left side as per rule # 1
-    totalUnitOfSnow = fillAndSendRemaining(heights, totalUnitOfSnow, positionToSnow + 1, capacityHolder, 1); // filling right side as per rule # 2
+    System.out.println("capacityHolder - " + Arrays.toString(capacityHolder));
+    // fill left side ,, goes  postion -> left direction
+    for ( int index = positionToSnow - 1; index >=0 && totalUnitOfSnow > 0; index--) {
+      int fillAtIndex = Math.min(totalUnitOfSnow, capacityHolder[index]);
+      heights[index] += fillAtIndex;
+      totalUnitOfSnow -= fillAtIndex;
+    }
+    // fill right side,, goes position -> right direction
+    for ( int index = positionToSnow + 1; index < heights.length && totalUnitOfSnow > 0; index++ ) {
+      int fillAtIndex = Math.min(totalUnitOfSnow, capacityHolder[index]);
+      heights[index] += fillAtIndex;
+      totalUnitOfSnow -= fillAtIndex;
+    }
+    // fill current position
     heights[positionToSnow] += totalUnitOfSnow; // filling remaining on top of current
     
     return heights;
@@ -87,49 +106,18 @@ public class LandscapeWithSnow {
 
   private int[] findCapacityHolder(int[] heights, int positionToSnow) {
     int[] capacity = new int[heights.length];
-    int tallest = Integer.MIN_VALUE;
-    
-    for (int index = 0; index < positionToSnow; index++) {
-      tallest = Math.max(tallest, heights[index]);
-      capacity[index] = (tallest - heights[index]);
+    final int positionToSnowHeight = heights[positionToSnow];
+    // find capacity by going toward left side from pos
+    for ( int i = positionToSnow - 1; i >=0 && heights[i] < positionToSnowHeight; i--) {
+      int maxAmountToSnow = positionToSnowHeight - heights[i];
+      capacity[i] = maxAmountToSnow;
     }
-   
-    tallest = Integer.MIN_VALUE;
-    for ( int index = heights.length - 1; index > positionToSnow ; index--) {
-      tallest = Math.max(tallest, heights[index]);
-      capacity[index] = (tallest - heights[index]);
+    // find capacity by going toward right side from pos
+    for ( int i = positionToSnow + 1; i <heights.length && heights[i] < positionToSnowHeight; i++) {
+      int maxAmountToSnow = positionToSnowHeight - heights[i];
+      capacity[i] = maxAmountToSnow;
     }
-    
     return capacity;
-  }
-  
-
-  private int fillAndSendRemaining(int[] heights, int totalUnitOfSnow, int index, int[] capacityHolder, int multiplier ) {
-    
-       while ( totalUnitOfSnow > 0 && !isIndexOutOfBound(heights, index) ) {
-         int currentCapacity = capacityHolder[index];
-         if (currentCapacity >= totalUnitOfSnow) {
-           heights[index] += totalUnitOfSnow;
-           totalUnitOfSnow = 0;
-         } else {
-           heights[index] += currentCapacity;
-           totalUnitOfSnow -= currentCapacity;
-         }
-         
-         index = index + ( 1 * multiplier);
-       }
-       
-    return totalUnitOfSnow;
-  }
-
-  
-  private boolean isIndexOutOfBound(int[] heights, int index) {
-    return index < 0 || index >= heights.length;
-  }
-  
-  public static void main(String[] args) {
-    int[] heights = { 2,1,1,2,1,2,3 }; 
-    System.err.println(Arrays.toString(new LandscapeWithSnow().afterSnow(heights, 10, 3)));
   }
   
 }

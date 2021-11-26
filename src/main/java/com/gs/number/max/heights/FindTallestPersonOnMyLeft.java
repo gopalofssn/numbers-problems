@@ -8,7 +8,8 @@ import java.util.Arrays;
 2          |           |  |  |
 1    |     |  |     |  |  |  |  |
   0  1  2  3  4  5  6  7  8  9  10
- [0  1  1  2  2  2  2  3  3  3  3 3] 
+ [0  1  1  2  2  2  2  3  3  3  3 ] - output
+ 
 
 */
 
@@ -20,9 +21,8 @@ public class FindTallestPersonOnMyLeft {
     int tallest = Integer.MIN_VALUE;
     
     for (int index = 0; index < nums.length; index++) {
-      int current = nums[index];
-      if (current > tallest) {
-        tallest = current;
+      if (nums[index] > tallest) {
+        tallest = nums[index];
       }
       tallestHeightHolder[index] = tallest;
     }

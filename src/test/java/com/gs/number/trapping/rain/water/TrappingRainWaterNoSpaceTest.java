@@ -3,7 +3,7 @@ package com.gs.number.trapping.rain.water;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
-public class TrappingRainWaterTest {
+public class TrappingRainWaterNoSpaceTest {
 
   private TrappingRainWaterTwoExtraArray trappingRainWater= new TrappingRainWaterTwoExtraArray();
 

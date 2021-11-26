@@ -14,62 +14,44 @@ public class TrappingRainWaterNoExtraSpace implements TrappingRainWater{
 
   @Override
   public int trap(int[] heights) {
+    int highestIndex = 0;
+    for ( int i = 0; i < heights.length; i++) {
+      if (heights[i] > heights[highestIndex]) {
+        highestIndex = i;
+      }
+    }
     
-    if (heights == null || heights.length == 0)
-      return 0;
-
-    int supremeHightIndex = findSupremeHightIndex(heights);
-    
-    return leftSideWaterTrap(heights, supremeHightIndex) + rightSideWaterTrap(heights, supremeHightIndex);
+    return leftSideTrap(heights, highestIndex) + rightSideTrap(heights, highestIndex);
   }
 
-  private int rightSideWaterTrap(int[] heights, int supremeHightIndex) {
-
-    int total = 0;
-    int rightMaxIndex = heights.length - 1;
-    
-    for ( int index = rightMaxIndex - 2; index > supremeHightIndex; index--) {
-      if ( heights[index] > heights[rightMaxIndex]) {
-        rightMaxIndex = index;
+  private int leftSideTrap(int[] heights, int highestIndex) {
+    int result = 0;
+    int leftHighestIndex = 0;
+    for (int i = 1; i < highestIndex; i++) {
+      if ( heights[i] > heights[leftHighestIndex]) {
+        leftHighestIndex = i;
       }else {
-        int trapAmountAtIndex = ( heights[rightMaxIndex] - heights[index]);
-        total += trapAmountAtIndex;
+        int diff = heights[leftHighestIndex] - heights[i]; 
+        result += diff;
       }
     }
-        
-    return total;
+    return result;
   }
 
-  private int leftSideWaterTrap(int[] heights, int supremeHightIndex) {
-    
-    int total = 0;
-    int leftMaxIndex = 0;
-    
-    for (int index = 1; index < supremeHightIndex; index++) {
-      if ( heights[index]  > heights[leftMaxIndex]) {
-        leftMaxIndex = index;
+  private int rightSideTrap(int[] heights, int highestIndex) {
+    int result = 0;
+    int rightHighestIndex = heights.length - 1;
+    for (int i = heights.length - 2; i > highestIndex; i--) {
+      if ( heights[i] > heights[rightHighestIndex]) {
+        rightHighestIndex = i;
       }else {
-        int trapAmountAtIndex = ( heights[leftMaxIndex] - heights[index]);
-        total = total + trapAmountAtIndex;
+        int diff = heights[rightHighestIndex] - heights[i]; 
+        result += diff;
       }
     }
-    
-    return total;
+    return result;
   }
 
-  private int findSupremeHightIndex(int[] heights) {
-    
-    int supremeHightIndex = 0;
-    int max = Integer.MIN_VALUE;
-    
-    for (int index = 0; index < heights.length; index++) {
-      if( heights[index] > max) {
-        supremeHightIndex = index;
-        max = heights[index];
-      }
-    }
-    
-    return supremeHightIndex;
-  }
-
+  
+  
 }

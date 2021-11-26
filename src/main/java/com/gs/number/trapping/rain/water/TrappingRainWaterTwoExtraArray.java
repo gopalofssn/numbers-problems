@@ -1,12 +1,5 @@
 package com.gs.number.trapping.rain.water;
 
-import java.util.Arrays;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-
 /*
 basic approach
 --------------
@@ -27,53 +20,43 @@ formula  to hold water each index-
 public class TrappingRainWaterTwoExtraArray implements TrappingRainWater {
 
   public int trap(int[] heights) {
-
-    if (heights == null || heights.length == 0)
-      return 0;
-
-    int[] leftMaxHeights = findLeftMaxHeights(heights);
-    int[] rightMaxHeights = findRightMaxHeights(heights);
-
-    int total = 0;
-    for (int index = 0; index < heights.length; index++) {
-      int min = Math.min(leftMaxHeights[index], rightMaxHeights[index]);
-      int diff = min - heights[index];
-      if (diff > 0) {
-        total += diff;
+    
+    int[] leftMax = findLeftMax(heights);
+    int[] rightMax = findRightMax(heights);
+    int result = 0;
+    for ( int i = 1; i < heights.length - 1  ; i++) {
+      int height = Math.min(leftMax[i], rightMax[i]);
+      if (heights[i] < height) {
+        int diff = height - heights[i];
+        result = result + diff;
       }
     }
-
-    return total;
+    return result;    
   }
 
-
-  private int[] findRightMaxHeights(int[] heights) {
-    int[] rightMaxHeights = new int[heights.length];
+  private int[] findRightMax(int[] heights) {
+    int[] result = new int[heights.length];
     int max = Integer.MIN_VALUE;
-
-    for (int index = heights.length - 1; index >= 0; index--) {
-      max = Math.max(max, heights[index]);
-      rightMaxHeights[index] = max;
+    for ( int i = 0; i < heights.length; i++) {
+      max = Math.max(max, heights[i]);
+      result[i] = max;
     }
-
-    return rightMaxHeights;
+    return result;
   }
 
-  private int[] findLeftMaxHeights(int[] heights) {
-    int[] leftMaxHeights = new int[heights.length];
-    
+  private int[] findLeftMax(int[] heights) {
+    int[] result = new int[heights.length];
     int max = Integer.MIN_VALUE;
-
-    Arrays.stream(heights)
-          .forEach(System.out::println);
-    
-    
-    for (int index = 0; index < heights.length; index++) {
-      max = Math.max(max, heights[index]);
-      leftMaxHeights[index] = max;
+    for ( int i = heights.length - 1; i >=0 ; i--) {
+      max = Math.max(max, heights[i]);
+      result[i] = max;
     }
+    return result;
+  }
 
-    return leftMaxHeights;
+  public static void main(String[] args) {
+    int[] heights = {0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1};
+    System.out.println(new TrappingRainWaterTwoExtraArray().trap(heights));
   }
 
 }

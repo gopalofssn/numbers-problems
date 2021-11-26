@@ -1,11 +1,14 @@
 package com.gs.number.find.gift.pair;
 
-import com.gs.number.find.gift.pair.Product.ProductSortingByPriceDesc;
+import java.util.Arrays;
+import java.util.Comparator;
 
 public class FindTwoGift {
 
   public String[] find(Product[] products, final float total) {
-    products = ProductSortingByPriceDesc.sort(products);
+    Comparator<Product> cmp =  Product::compareByPrice;
+    cmp = cmp.thenComparing(Product::compareByName);
+    Arrays.sort(products, cmp);
    
     int left = 0;
     int right = products.length - 1;
